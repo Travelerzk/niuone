@@ -2140,3 +2140,682 @@
     html[data-theme="dark"] .dragon-tiger-detail { background:#0d1118; }
     html[data-theme="dark"] .dragon-tiger-reasons,
     html[data-theme="dark"] .dragon-tiger-seats { border-color:#36445c; background:#121923; }
+
+/* ---- Steven portfolio stock skin ---- */
+:root,
+html[data-theme="dark"],
+html:not([data-theme="dark"]) {
+  color-scheme:dark;
+  --bg:#05030a;
+  --panel:rgba(13, 12, 24, .82);
+  --panel2:rgba(255, 255, 255, .055);
+  --text:#f8f7ff;
+  --muted:#a7a3b8;
+  --line:rgba(255, 255, 255, .12);
+  --accent:#8b5cf6;
+  --accent-soft:rgba(139, 92, 246, .16);
+  --accent-border:rgba(196, 181, 253, .34);
+  --accent-text:#ddd6fe;
+  --green:#34d399;
+  --green-soft:rgba(6, 78, 59, .22);
+  --green-border:rgba(52, 211, 153, .32);
+  --green-text:#a7f3d0;
+  --yellow:#fbbf24;
+  --yellow-soft:rgba(113, 63, 18, .22);
+  --yellow-border:rgba(251, 191, 36, .32);
+  --yellow-text:#fde68a;
+  --red:#fb7185;
+  --red-soft:rgba(127, 29, 29, .24);
+  --red-border:rgba(251, 113, 133, .32);
+  --red-text:#fecdd3;
+  --chart-grid:rgba(255, 255, 255, .10);
+  --chart-grid-soft:rgba(255, 255, 255, .06);
+  --chart-zero:rgba(255, 255, 255, .34);
+  --chart-marker:#f8f7ff;
+}
+
+html,
+body {
+  min-height:100%;
+}
+
+body {
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  background:
+    radial-gradient(circle at 16% 0%, rgba(139, 92, 246, .22), transparent 30%),
+    radial-gradient(circle at 88% 22%, rgba(14, 165, 233, .13), transparent 30%),
+    linear-gradient(135deg, #05030a 0%, #080611 48%, #090817 100%);
+  color:var(--text);
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.55), transparent 72%);
+}
+
+header {
+  padding:16px max(clamp(16px, 4vw, 42px), calc((100vw - 1440px) / 2));
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:rgba(5, 3, 10, .82);
+  backdrop-filter:blur(24px);
+  box-shadow:0 16px 46px rgba(0,0,0,.24);
+}
+
+h1,
+.practice-chart-title,
+.practice-chart-title-text,
+.market-card-title,
+.indices-part-title,
+.practice-log-title,
+.practice-rule-title,
+.compliance-dialog-head h2 {
+  font-family:"Century Gothic", "Avenir Next", Avenir, Montserrat, Inter, "Microsoft YaHei", sans-serif;
+  letter-spacing:0;
+}
+
+h1 {
+  color:#fff;
+  font-size:clamp(25px, 3vw, 36px);
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.header-row {
+  align-items:flex-start;
+}
+
+.header-actions {
+  gap:9px;
+}
+
+.settings-link,
+.header-link,
+.version-status,
+.refresh-pill,
+.theme-toggle,
+input,
+select,
+button {
+  border-color:rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:#f8f7ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.settings-link,
+.header-link,
+.version-status {
+  border-radius:6px;
+  transition:transform .16s ease, border-color .16s ease, background .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.settings-link:hover,
+.header-link:hover,
+.version-status:hover,
+.theme-toggle:hover {
+  border-color:rgba(196,181,253,.44);
+  background:rgba(139,92,246,.15);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 12px 30px rgba(0,0,0,.22), 0 0 0 1px rgba(139,92,246,.10) inset;
+}
+
+.version-status span,
+.refresh-pill span,
+.subtitle {
+  color:var(--muted);
+}
+
+.version-status b,
+.refresh-pill b {
+  color:#fff;
+}
+
+.category-tabs {
+  margin-top:16px;
+  padding:4px;
+  border-color:rgba(255,255,255,.12);
+  border-radius:8px;
+  background:rgba(255,255,255,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.tab {
+  border-radius:5px;
+  color:#a7a3b8;
+  font-weight:700;
+  transition:background .16s ease, color .16s ease, transform .16s ease, border-color .16s ease;
+}
+
+.tab + .tab::before {
+  background:rgba(255,255,255,.12);
+}
+
+.tab:hover {
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  transform:translateY(-1px);
+}
+
+.tab.active {
+  border-color:rgba(196,181,253,.34);
+  background:rgba(139,92,246,.22);
+  color:#fff;
+  box-shadow:0 10px 24px rgba(139,92,246,.14), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+main {
+  padding-top:24px;
+}
+
+.feed {
+  gap:16px;
+}
+
+.card,
+.sector-cloud,
+.market-monitor-card,
+.us-market-summary-card,
+.market-detail-overview,
+.market-section,
+.x-monitor-panel,
+.x-detail,
+.practice-log-panel,
+.practice-chart-card,
+.rating-card,
+.rating-table-wrap,
+.practice-log-detail-card,
+.practice-rule-card,
+.practice-calendar-card,
+.practice-calendar-day-curve,
+.dragon-tiger-unavailable,
+.compliance-dialog {
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.035)),
+    rgba(8, 6, 17, .82);
+  box-shadow:0 20px 58px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter:blur(18px);
+}
+
+.card,
+.sector-cloud,
+.market-monitor-card,
+.us-market-summary-card,
+.practice-chart-card,
+.practice-log-panel,
+.rating-card,
+.rating-table-wrap,
+.index-card,
+.position-card,
+.position-brief-card,
+.practice-kpi,
+.settings-link,
+.header-link,
+.version-status,
+.theme-toggle {
+  transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.card:hover,
+.sector-cloud:hover,
+.practice-chart-card:hover,
+.practice-log-panel:hover,
+.rating-card:hover,
+.rating-table-wrap:hover,
+.index-card:hover,
+.position-card:hover,
+.position-brief-card:hover,
+.practice-kpi:hover,
+.market-monitor-card:hover,
+.us-market-summary-card:hover,
+.settings-card:hover {
+  transform:translateY(-2px);
+  border-color:rgba(196,181,253,.38);
+  box-shadow:0 26px 68px rgba(0,0,0,.34), 0 0 0 1px rgba(139,92,246,.10) inset, inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.sector-cloud h3,
+.practice-account-head h3,
+.practice-log-title {
+  color:#fff;
+  font-weight:800;
+}
+
+.practice-manual-cycle-btn,
+.practice-market-summary-btn,
+.practice-rule-btn,
+.practice-calendar-open-btn,
+.dragon-tiger-unavailable a {
+  border-color:rgba(196,181,253,.38);
+  background:linear-gradient(135deg, rgba(139,92,246,.86), rgba(124,58,237,.64));
+  color:#fff;
+  box-shadow:0 13px 28px rgba(139,92,246,.20), inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.practice-market-summary-btn {
+  background:linear-gradient(135deg, rgba(139,92,246,.82), rgba(14,165,233,.52));
+}
+
+.practice-manual-cycle-btn:hover:not(:disabled),
+.practice-market-summary-btn:hover:not(:disabled),
+.practice-rule-btn:hover,
+.practice-calendar-open-btn:hover {
+  border-color:rgba(221,214,254,.68);
+  background:linear-gradient(135deg, rgba(167,139,250,.92), rgba(139,92,246,.72));
+  transform:translateY(-2px);
+  filter:brightness(1.04);
+}
+
+.practice-market-evaluation,
+.indices-cache-notice,
+.practice-market-summary-card,
+.thread-original {
+  border-color:rgba(196,181,253,.24);
+  background:linear-gradient(135deg, rgba(139,92,246,.14), rgba(14,165,233,.075));
+  color:#d7d2e8;
+}
+
+.practice-market-evaluation-label,
+.practice-market-summary-title,
+.practice-market-summary-section b,
+.indices-cache-notice span:last-child {
+  color:#ddd6fe;
+}
+
+.practice-mode-control,
+.indices-switch,
+.market-region-switch {
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.practice-mode-btn,
+.indices-switch-btn,
+.market-region-btn {
+  color:#a7a3b8;
+  transition:background .16s ease, color .16s ease, transform .16s ease;
+}
+
+.practice-mode-btn:hover,
+.indices-switch-btn:hover,
+.market-region-btn:hover {
+  color:#fff;
+  background:rgba(255,255,255,.07);
+}
+
+.practice-mode-btn.active,
+.indices-switch-btn.active,
+.market-region-btn.active {
+  color:#fff;
+  background:rgba(139,92,246,.24);
+  box-shadow:0 9px 22px rgba(139,92,246,.13), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.sector-item,
+.hot-item,
+.index-card,
+.market-metric-item,
+.inline-field,
+.position-card,
+.position-brief-card,
+.practice-log-row,
+.practice-kpi,
+.rating-inline-grid .inline-field,
+.dragon-tiger-detail-meta,
+.dragon-tiger-seat-side,
+.dragon-tiger-detail-record,
+.practice-calendar-summary,
+.practice-calendar-stat,
+.practice-calendar-day {
+  border-color:rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+.practice-kpi-label,
+.index-name,
+.market-card-time,
+.practice-rule-row,
+.practice-rule-meta,
+.practice-log-time,
+.position-brief-meta,
+.meta {
+  color:var(--muted);
+}
+
+.practice-kpi-value,
+.index-price,
+.inline-value,
+.practice-chart-value {
+  color:#fff;
+  font-variant-numeric:tabular-nums;
+}
+
+.market-card-head,
+.x-monitor-head,
+.market-section-head,
+.practice-log-head,
+.practice-log-detail-head,
+.practice-rule-head,
+.practice-calendar-head,
+.rating-table th,
+.dragon-tiger-list-head {
+  border-color:rgba(255,255,255,.10);
+  background:rgba(255,255,255,.055);
+}
+
+.practice-log-row:hover,
+.x-row:hover,
+.dragon-tiger-item > summary:hover {
+  border-color:rgba(196,181,253,.30);
+  background:rgba(139,92,246,.105);
+}
+
+.compliance-dialog-backdrop,
+.practice-rule-backdrop,
+.practice-log-detail-backdrop,
+.practice-calendar-backdrop {
+  background:rgba(0,0,0,.64);
+  backdrop-filter:blur(14px);
+}
+
+.compliance-dialog,
+.practice-rule-card,
+.practice-log-detail-card,
+.practice-calendar-card {
+  animation:stockDialogIn .18s ease both;
+}
+
+.compliance-row {
+  border-color:rgba(255,255,255,.11);
+  background:rgba(255,255,255,.055);
+}
+
+.compliance-badge {
+  border-color:rgba(251,191,36,.32);
+  background:rgba(113,63,18,.22);
+  color:#fde68a;
+}
+
+.compliance-badge.risk {
+  border-color:rgba(251,113,133,.32);
+  background:rgba(127,29,29,.24);
+  color:#fecdd3;
+}
+
+.compliance-text {
+  color:#c8c3d8;
+}
+
+.compliance-dialog-close {
+  border-color:rgba(196,181,253,.42);
+  background:rgba(139,92,246,.82);
+  color:#fff;
+}
+
+.loading {
+  color:#a7a3b8;
+}
+
+@keyframes stockDialogIn {
+  from { opacity:0; transform:translateY(10px) scale(.985); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+@media (max-width:720px) {
+  header {
+    padding:13px 12px;
+  }
+
+  .header-row {
+    gap:11px;
+  }
+
+  h1 {
+    font-size:24px;
+  }
+
+  .header-actions {
+    gap:7px;
+  }
+
+  .settings-link,
+  .header-link,
+  .version-status,
+  .refresh-pill {
+    padding:7px 9px;
+  }
+
+  .card:hover,
+  .sector-cloud:hover,
+  .practice-chart-card:hover,
+  .practice-log-panel:hover,
+  .rating-card:hover,
+  .rating-table-wrap:hover,
+  .index-card:hover,
+  .position-card:hover,
+  .position-brief-card:hover,
+  .practice-kpi:hover,
+  .market-monitor-card:hover,
+  .us-market-summary-card:hover {
+    transform:none;
+  }
+}
+
+html[data-theme="dark"] header,
+html:not([data-theme="dark"]) header {
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:rgba(5, 3, 10, .82);
+  backdrop-filter:blur(24px);
+  box-shadow:0 16px 46px rgba(0,0,0,.24);
+}
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .sector-cloud,
+html[data-theme="dark"] .market-monitor-card,
+html[data-theme="dark"] .us-market-summary-card,
+html[data-theme="dark"] .practice-log-panel,
+html[data-theme="dark"] .practice-chart-card,
+html[data-theme="dark"] .rating-card,
+html[data-theme="dark"] .rating-table-wrap,
+html:not([data-theme="dark"]) .card,
+html:not([data-theme="dark"]) .sector-cloud,
+html:not([data-theme="dark"]) .market-monitor-card,
+html:not([data-theme="dark"]) .us-market-summary-card,
+html:not([data-theme="dark"]) .practice-log-panel,
+html:not([data-theme="dark"]) .practice-chart-card,
+html:not([data-theme="dark"]) .rating-card,
+html:not([data-theme="dark"]) .rating-table-wrap {
+  border-color:rgba(255,255,255,.12);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.085), rgba(255,255,255,.035)),
+    rgba(8, 6, 17, .82);
+  box-shadow:0 20px 58px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+html[data-theme="dark"] .settings-link,
+html[data-theme="dark"] .header-link,
+html[data-theme="dark"] .version-status,
+html[data-theme="dark"] .refresh-pill,
+html[data-theme="dark"] .theme-toggle,
+html:not([data-theme="dark"]) .settings-link,
+html:not([data-theme="dark"]) .header-link,
+html:not([data-theme="dark"]) .version-status,
+html:not([data-theme="dark"]) .refresh-pill,
+html:not([data-theme="dark"]) .theme-toggle {
+  border-color:rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:#f8f7ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+html[data-theme="dark"] .settings-link:hover,
+html[data-theme="dark"] .header-link:hover,
+html[data-theme="dark"] .version-status:hover,
+html[data-theme="dark"] .theme-toggle:hover,
+html:not([data-theme="dark"]) .settings-link:hover,
+html:not([data-theme="dark"]) .header-link:hover,
+html:not([data-theme="dark"]) .version-status:hover,
+html:not([data-theme="dark"]) .theme-toggle:hover {
+  border-color:rgba(196,181,253,.44);
+  background:rgba(139,92,246,.15);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 12px 30px rgba(0,0,0,.22), 0 0 0 1px rgba(139,92,246,.10) inset;
+}
+
+html[data-theme="dark"] .version-status span,
+html[data-theme="dark"] .refresh-pill span,
+html:not([data-theme="dark"]) .version-status span,
+html:not([data-theme="dark"]) .refresh-pill span {
+  color:#a7a3b8;
+}
+
+html[data-theme="dark"] .version-status b,
+html[data-theme="dark"] .refresh-pill b,
+html:not([data-theme="dark"]) .version-status b,
+html:not([data-theme="dark"]) .refresh-pill b {
+  color:#fff;
+}
+
+html[data-theme="dark"] .practice-kpi,
+html[data-theme="dark"] .position-card,
+html[data-theme="dark"] .position-brief-card,
+html[data-theme="dark"] .practice-log-row,
+html[data-theme="dark"] .inline-field,
+html[data-theme="dark"] .rating-inline-grid .inline-field,
+html[data-theme="dark"] .empty,
+html[data-theme="dark"] .practice-log-head,
+html[data-theme="dark"] .practice-chart-wrap,
+html:not([data-theme="dark"]) .practice-kpi,
+html:not([data-theme="dark"]) .position-card,
+html:not([data-theme="dark"]) .position-brief-card,
+html:not([data-theme="dark"]) .practice-log-row,
+html:not([data-theme="dark"]) .inline-field,
+html:not([data-theme="dark"]) .rating-inline-grid .inline-field,
+html:not([data-theme="dark"]) .empty,
+html:not([data-theme="dark"]) .practice-log-head,
+html:not([data-theme="dark"]) .practice-chart-wrap {
+  border-color:rgba(255,255,255,.10) !important;
+  background:rgba(255,255,255,.055) !important;
+  color:#f8f7ff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+html[data-theme="dark"] .practice-chart-title,
+html[data-theme="dark"] .practice-kpi-value,
+html[data-theme="dark"] .inline-value,
+html[data-theme="dark"] .position-name,
+html[data-theme="dark"] .practice-log-title,
+html:not([data-theme="dark"]) .practice-chart-title,
+html:not([data-theme="dark"]) .practice-kpi-value,
+html:not([data-theme="dark"]) .inline-value,
+html:not([data-theme="dark"]) .position-name,
+html:not([data-theme="dark"]) .practice-log-title {
+  color:#fff;
+}
+
+html[data-theme="dark"] .practice-chart-sub,
+html[data-theme="dark"] .practice-kpi-label,
+html[data-theme="dark"] .position-brief-meta,
+html[data-theme="dark"] .practice-log-time,
+html[data-theme="dark"] .practice-log-empty,
+html[data-theme="dark"] .empty,
+html:not([data-theme="dark"]) .practice-chart-sub,
+html:not([data-theme="dark"]) .practice-kpi-label,
+html:not([data-theme="dark"]) .position-brief-meta,
+html:not([data-theme="dark"]) .practice-log-time,
+html:not([data-theme="dark"]) .practice-log-empty,
+html:not([data-theme="dark"]) .empty {
+  color:#a7a3b8;
+}
+
+html[data-theme="dark"] .practice-log-row:hover,
+html:not([data-theme="dark"]) .practice-log-row:hover {
+  border-color:rgba(196,181,253,.30) !important;
+  background:rgba(139,92,246,.105) !important;
+}
+
+html[data-theme="dark"] .practice-manual-cycle-btn,
+html[data-theme="dark"] .practice-market-summary-btn,
+html[data-theme="dark"] .practice-rule-btn,
+html[data-theme="dark"] .practice-calendar-open-btn,
+html:not([data-theme="dark"]) .practice-manual-cycle-btn,
+html:not([data-theme="dark"]) .practice-market-summary-btn,
+html:not([data-theme="dark"]) .practice-rule-btn,
+html:not([data-theme="dark"]) .practice-calendar-open-btn {
+  border-color:rgba(196,181,253,.38) !important;
+  background:linear-gradient(135deg, rgba(139,92,246,.86), rgba(124,58,237,.64)) !important;
+  color:#fff !important;
+  box-shadow:0 13px 28px rgba(139,92,246,.20), inset 0 1px 0 rgba(255,255,255,.16) !important;
+}
+
+html[data-theme="dark"] .practice-market-summary-btn,
+html:not([data-theme="dark"]) .practice-market-summary-btn {
+  background:linear-gradient(135deg, rgba(139,92,246,.82), rgba(14,165,233,.52)) !important;
+}
+
+html[data-theme="dark"] .practice-mode-btn,
+html[data-theme="dark"] .benchmark-toggle,
+html[data-theme="dark"] .pill,
+html:not([data-theme="dark"]) .practice-mode-btn,
+html:not([data-theme="dark"]) .benchmark-toggle,
+html:not([data-theme="dark"]) .pill {
+  border-color:rgba(255,255,255,.12) !important;
+  background:rgba(255,255,255,.055) !important;
+  color:#c8c3d8 !important;
+}
+
+html[data-theme="dark"] .practice-mode-btn.active,
+html[data-theme="dark"] .benchmark-toggle.on,
+html:not([data-theme="dark"]) .practice-mode-btn.active,
+html:not([data-theme="dark"]) .benchmark-toggle.on {
+  border-color:rgba(196,181,253,.34) !important;
+  background:rgba(139,92,246,.24) !important;
+  color:#fff !important;
+}
+
+html[data-theme="dark"] .practice-market-evaluation,
+html[data-theme="dark"] .practice-mode-control,
+html[data-theme="dark"] .indices-switch,
+html[data-theme="dark"] .market-region-switch,
+html:not([data-theme="dark"]) .practice-market-evaluation,
+html:not([data-theme="dark"]) .practice-mode-control,
+html:not([data-theme="dark"]) .indices-switch,
+html:not([data-theme="dark"]) .market-region-switch {
+  border-color:rgba(255,255,255,.12) !important;
+  background:rgba(255,255,255,.055) !important;
+  color:#c8c3d8 !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+html[data-theme="dark"] .practice-market-evaluation-label,
+html:not([data-theme="dark"]) .practice-market-evaluation-label {
+  color:#ddd6fe !important;
+}
+
+html[data-theme="dark"] .practice-market-evaluation time,
+html:not([data-theme="dark"]) .practice-market-evaluation time {
+  color:#a7a3b8 !important;
+}
