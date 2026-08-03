@@ -1326,33 +1326,88 @@ function renderTabs() {
 
 function bindPortfolioMotionCards() {
   const motionSelectors = [
-    '.stock-lab-card',
     '.stock-lab-hero-copy',
+    '.stock-lab-posture',
+    '.stock-lab-metric',
+    '.stock-lab-chart-panel',
+    '.stock-lab-strategy-panel',
+    '.stock-lab-journal-panel',
     '.index-card',
-    '.sector-cloud:not(.stock-lab-shell)',
-    '.hot-item',
-    '.sector-item',
     '.market-monitor-card',
     '.us-market-summary-card',
-    '.market-metric-item',
     '.dragon-tiger-item',
-    '.dragon-tiger-panel',
-    '.position-card',
-    '.position-brief-card',
-    '.practice-log-panel',
-    '.practice-chart-card'
+    '.dragon-tiger-panel'
   ];
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const gradientPositions = ['80% 55%', '69% 34%', '8% 6%', '41% 38%', '86% 85%', '82% 18%', '51% 4%'];
+  const gradientKeys = ['--gradient-one', '--gradient-two', '--gradient-three', '--gradient-four', '--gradient-five', '--gradient-six', '--gradient-seven'];
+  const colorMap = [0, 1, 2, 0, 1, 2, 1];
+  const colors = ['#11101b', '#4f46a6', '#9c7cff'];
+  const setGlowDefaults = card => {
+    card.style.setProperty('--card-bg', '#11101b');
+    card.style.setProperty('--edge-proximity', '0');
+    card.style.setProperty('--cursor-angle', '45deg');
+    card.style.setProperty('--edge-sensitivity', '28');
+    card.style.setProperty('--border-radius', '6px');
+    card.style.setProperty('--glow-padding', '24px');
+    card.style.setProperty('--cone-spread', '24');
+    card.style.setProperty('--fill-opacity', '0.25');
+    card.style.setProperty('--cursor-x', '50%');
+    card.style.setProperty('--cursor-y', '50%');
+    card.style.setProperty('--tilt-rotate-x', '0deg');
+    card.style.setProperty('--tilt-rotate-y', '0deg');
+    card.style.setProperty('--tilt-scale', '1');
+    card.style.setProperty('--glow-color', 'hsl(263deg 88% 72% / 88%)');
+    card.style.setProperty('--glow-color-60', 'hsl(263deg 88% 72% / 53%)');
+    card.style.setProperty('--glow-color-50', 'hsl(263deg 88% 72% / 44%)');
+    card.style.setProperty('--glow-color-40', 'hsl(263deg 88% 72% / 35%)');
+    card.style.setProperty('--glow-color-30', 'hsl(263deg 88% 72% / 26%)');
+    card.style.setProperty('--glow-color-20', 'hsl(263deg 88% 72% / 18%)');
+    card.style.setProperty('--glow-color-10', 'hsl(263deg 88% 72% / 9%)');
+    gradientKeys.forEach((key, index) => {
+      const color = colors[Math.min(colorMap[index], colors.length - 1)];
+      card.style.setProperty(key, `radial-gradient(at ${gradientPositions[index]}, ${color} 0px, transparent 50%)`);
+    });
+    card.style.setProperty('--gradient-base', `linear-gradient(${colors[0]} 0 100%)`);
+  };
+  const ensureGlowStructure = card => {
+    if (!card.querySelector(':scope > .edge-light')) {
+      const edgeLight = document.createElement('span');
+      edgeLight.className = 'edge-light';
+      card.insertBefore(edgeLight, card.firstChild);
+    }
+    if (!card.querySelector(':scope > .border-glow-inner')) {
+      const inner = document.createElement('div');
+      inner.className = 'border-glow-inner';
+      const children = Array.from(card.childNodes).filter(node => !(node.nodeType === 1 && node.classList.contains('edge-light')));
+      children.forEach(node => inner.appendChild(node));
+      card.appendChild(inner);
+    }
+  };
+  const getEdgeProximity = (card, x, y) => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    const kx = dx === 0 ? Infinity : cx / Math.abs(dx);
+    const ky = dy === 0 ? Infinity : cy / Math.abs(dy);
+    return Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+  };
+  const getCursorAngle = (card, x, y) => {
+    const rect = card.getBoundingClientRect();
+    const dx = x - rect.width / 2;
+    const dy = y - rect.height / 2;
+    if (dx === 0 && dy === 0) return 0;
+    const degrees = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+    return degrees < 0 ? degrees + 360 : degrees;
+  };
   document.querySelectorAll(motionSelectors.join(',')).forEach(card => {
     if (card.dataset.motionCardBound === '1') return;
     card.dataset.motionCardBound = '1';
-    card.classList.add('portfolio-motion-card');
-    card.style.setProperty('--mx', '50%');
-    card.style.setProperty('--my', '50%');
-    card.style.setProperty('--rx', '0deg');
-    card.style.setProperty('--ry', '0deg');
-    card.style.setProperty('--dx', '0');
-    card.style.setProperty('--dy', '0');
+    card.classList.add('border-glow-card', 'tilt-enabled');
+    setGlowDefaults(card);
+    ensureGlowStructure(card);
     if (reduceMotion) return;
     card.addEventListener('pointermove', event => {
       if (event.pointerType === 'touch') return;
@@ -1360,22 +1415,20 @@ function bindPortfolioMotionCards() {
       if (!rect.width || !rect.height) return;
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const dx = (x - rect.width / 2) / rect.width;
-      const dy = (y - rect.height / 2) / rect.height;
-      card.style.setProperty('--mx', `${Math.max(0, Math.min(100, x / rect.width * 100)).toFixed(2)}%`);
-      card.style.setProperty('--my', `${Math.max(0, Math.min(100, y / rect.height * 100)).toFixed(2)}%`);
-      card.style.setProperty('--rx', `${(-dy * 6).toFixed(2)}deg`);
-      card.style.setProperty('--ry', `${(dx * 6).toFixed(2)}deg`);
-      card.style.setProperty('--dx', dx.toFixed(3));
-      card.style.setProperty('--dy', dy.toFixed(3));
+      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -5;
+      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 5;
+      card.style.setProperty('--edge-proximity', `${(getEdgeProximity(card, x, y) * 100).toFixed(3)}`);
+      card.style.setProperty('--cursor-angle', `${getCursorAngle(card, x, y).toFixed(3)}deg`);
+      card.style.setProperty('--cursor-x', `${((x / rect.width) * 100).toFixed(3)}%`);
+      card.style.setProperty('--cursor-y', `${((y / rect.height) * 100).toFixed(3)}%`);
+      card.style.setProperty('--tilt-rotate-x', `${rotateX.toFixed(3)}deg`);
+      card.style.setProperty('--tilt-rotate-y', `${rotateY.toFixed(3)}deg`);
+      card.style.setProperty('--tilt-scale', '1.025');
     }, {passive:true});
     const resetMotion = () => {
-      card.style.setProperty('--mx', '50%');
-      card.style.setProperty('--my', '50%');
-      card.style.setProperty('--rx', '0deg');
-      card.style.setProperty('--ry', '0deg');
-      card.style.setProperty('--dx', '0');
-      card.style.setProperty('--dy', '0');
+      card.style.setProperty('--tilt-rotate-x', '0deg');
+      card.style.setProperty('--tilt-rotate-y', '0deg');
+      card.style.setProperty('--tilt-scale', '1');
     };
     card.addEventListener('pointerleave', resetMotion, {passive:true});
     card.addEventListener('blur', resetMotion, true);
