@@ -2819,3 +2819,461 @@ html[data-theme="dark"] .practice-market-evaluation time,
 html:not([data-theme="dark"]) .practice-market-evaluation time {
   color:#a7a3b8 !important;
 }
+
+/* Stock page redesign based on the approved Figma V2 direction */
+.stock-lab-shell,
+html[data-theme="dark"] .stock-lab-shell,
+html:not([data-theme="dark"]) .stock-lab-shell {
+  display:grid;
+  gap:18px;
+  margin-bottom:18px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent !important;
+  box-shadow:none !important;
+  backdrop-filter:none;
+  overflow:visible;
+}
+
+.stock-lab-shell:hover {
+  transform:none;
+  border-color:transparent;
+  box-shadow:none;
+}
+
+.stock-lab-hero {
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(320px, .58fr);
+  gap:18px;
+  align-items:stretch;
+}
+
+.stock-lab-hero-copy {
+  min-height:242px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:16px;
+  padding:26px 28px;
+  border:1px solid rgba(255,255,255,.10);
+  border-top:2px solid rgba(168,85,247,.95);
+  border-radius:6px;
+  background:linear-gradient(135deg, rgba(17,16,27,.96), rgba(10,8,18,.92));
+  box-shadow:0 24px 70px rgba(0,0,0,.26);
+}
+
+.stock-lab-eyebrow {
+  color:#c084fc;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.stock-lab-hero-copy h2 {
+  margin:0;
+  color:#fff;
+  font-size:clamp(30px, 4vw, 52px);
+  line-height:1.02;
+  letter-spacing:0;
+}
+
+.stock-lab-hero-copy p,
+.stock-lab-card p {
+  margin:0;
+  color:#a7a3b8;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.stock-lab-actions {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.stock-lab-card {
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  padding:27px 28px 26px;
+  border:1px solid rgba(255,255,255,.10);
+  border-top:2px solid rgba(168,85,247,.92);
+  border-radius:6px;
+  background:#11101b;
+  box-shadow:0 22px 64px rgba(0,0,0,.24);
+  transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.stock-lab-card:hover {
+  transform:translateY(-3px);
+  border-color:rgba(196,181,253,.42);
+  border-top-color:#d8b4fe;
+  background:linear-gradient(135deg, rgba(70,43,118,.94), rgba(40,25,76,.96));
+  box-shadow:0 30px 76px rgba(0,0,0,.34), 0 0 0 1px rgba(192,132,252,.08) inset;
+}
+
+.stock-lab-card.is-active {
+  border-top-color:#d8b4fe;
+  background:linear-gradient(135deg, rgba(65,48,117,.96), rgba(48,28,87,.98));
+  box-shadow:0 26px 72px rgba(88,28,135,.22), 0 0 0 1px rgba(216,180,254,.12) inset;
+}
+
+.stock-lab-icon {
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  margin-bottom:25px;
+  border:1px solid rgba(192,132,252,.28);
+  border-radius:6px;
+  background:rgba(126,78,191,.22);
+  color:#d8b4fe;
+}
+
+.stock-lab-icon svg {
+  width:21px;
+  height:21px;
+}
+
+.stock-lab-number {
+  position:absolute;
+  top:27px;
+  right:28px;
+  color:rgba(255,255,255,.07);
+  font-size:32px;
+  font-weight:300;
+  line-height:1;
+  letter-spacing:0;
+  pointer-events:none;
+}
+
+.stock-lab-card-title {
+  margin:0 0 12px;
+  color:#fff;
+  font-size:20px;
+  font-weight:900;
+  line-height:1.22;
+  letter-spacing:0;
+}
+
+.stock-lab-posture {
+  display:flex;
+  flex-direction:column;
+}
+
+.stock-lab-posture-tone {
+  margin-bottom:8px;
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  line-height:1.1;
+  letter-spacing:0;
+}
+
+.stock-lab-posture .practice-market-evaluation {
+  margin:14px 0 0;
+}
+
+.stock-lab-posture .practice-market-summary-action {
+  margin-top:14px;
+}
+
+.stock-lab-posture .practice-market-summary-card {
+  margin-top:12px;
+}
+
+.stock-lab-metrics {
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:18px;
+}
+
+.stock-lab-metric {
+  min-height:218px;
+}
+
+.stock-lab-metric-value {
+  margin-bottom:12px;
+  color:#fff;
+  font-size:24px;
+  font-weight:900;
+  line-height:1.16;
+  font-variant-numeric:tabular-nums;
+  overflow-wrap:anywhere;
+}
+
+.stock-lab-metric-value.up {
+  color:#ff8a8a;
+}
+
+.stock-lab-metric-value.down {
+  color:#69e5ad;
+}
+
+.stock-lab-main-grid {
+  display:grid;
+  grid-template-columns:minmax(0, 1.18fr) minmax(320px, .56fr);
+  gap:18px;
+  align-items:start;
+}
+
+.stock-lab-chart-panel {
+  padding:16px;
+}
+
+.stock-lab-chart-panel > .stock-lab-number {
+  z-index:1;
+}
+
+.stock-lab-chart-panel .practice-chart-card,
+html[data-theme="dark"] .stock-lab-chart-panel .practice-chart-card,
+html:not([data-theme="dark"]) .stock-lab-chart-panel .practice-chart-card {
+  margin:0;
+  padding:10px 6px 0;
+  border:0 !important;
+  border-radius:0;
+  background:transparent !important;
+  box-shadow:none !important;
+  backdrop-filter:none;
+}
+
+.stock-lab-chart-panel .practice-chart-card:hover {
+  transform:none;
+  box-shadow:none;
+}
+
+.stock-lab-chart-panel .practice-chart-head {
+  padding-right:84px;
+}
+
+.stock-lab-chart-panel .practice-chart-wrap,
+html[data-theme="dark"] .stock-lab-chart-panel .practice-chart-wrap,
+html:not([data-theme="dark"]) .stock-lab-chart-panel .practice-chart-wrap {
+  min-height:286px;
+  border-color:rgba(255,255,255,.08) !important;
+  border-radius:6px;
+  background:rgba(255,255,255,.045) !important;
+}
+
+.stock-lab-strategy-panel {
+  min-height:100%;
+}
+
+.stock-lab-signal-list {
+  display:grid;
+  gap:10px;
+  margin-top:20px;
+}
+
+.stock-lab-signal-row {
+  display:grid;
+  grid-template-columns:42px minmax(0, 1fr);
+  gap:12px;
+  align-items:start;
+  padding:13px 12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:6px;
+  background:rgba(255,255,255,.045);
+  transition:background .16s ease, border-color .16s ease, transform .16s ease;
+}
+
+.stock-lab-signal-row:hover {
+  transform:translateY(-1px);
+  border-color:rgba(216,180,254,.30);
+  background:rgba(139,92,246,.15);
+}
+
+.stock-lab-signal-rank {
+  color:rgba(255,255,255,.18);
+  font-size:22px;
+  font-weight:300;
+  line-height:1;
+}
+
+.stock-lab-signal-copy {
+  display:grid;
+  gap:5px;
+  min-width:0;
+}
+
+.stock-lab-signal-copy b {
+  color:#fff;
+  font-size:15px;
+  line-height:1.25;
+}
+
+.stock-lab-signal-copy span,
+.stock-lab-signal-empty {
+  color:#a7a3b8;
+  font-size:12px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+
+.stock-lab-signal-empty {
+  padding:15px 12px;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:6px;
+  background:rgba(255,255,255,.035);
+}
+
+.stock-lab-journal-panel {
+  padding:22px;
+}
+
+.stock-lab-section-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.stock-lab-view-controls {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.stock-lab-journal-panel .position-card-list,
+.stock-lab-journal-panel .position-brief-grid {
+  margin-bottom:14px;
+}
+
+.stock-lab-journal-panel .position-card,
+.stock-lab-journal-panel .position-brief-card,
+.stock-lab-journal-panel .practice-log-panel,
+html[data-theme="dark"] .stock-lab-journal-panel .position-card,
+html[data-theme="dark"] .stock-lab-journal-panel .position-brief-card,
+html[data-theme="dark"] .stock-lab-journal-panel .practice-log-panel,
+html:not([data-theme="dark"]) .stock-lab-journal-panel .position-card,
+html:not([data-theme="dark"]) .stock-lab-journal-panel .position-brief-card,
+html:not([data-theme="dark"]) .stock-lab-journal-panel .practice-log-panel {
+  border-radius:6px;
+  border-color:rgba(255,255,255,.09) !important;
+  background:rgba(255,255,255,.045) !important;
+  box-shadow:none;
+}
+
+.stock-lab-journal-panel .practice-log-panel {
+  margin-top:10px;
+}
+
+.stock-lab-journal-panel .practice-rule-row {
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+@media (max-width:1080px) {
+  .stock-lab-hero,
+  .stock-lab-main-grid {
+    grid-template-columns:1fr;
+  }
+
+  .stock-lab-metrics {
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width:720px) {
+  .stock-lab-shell {
+    gap:14px;
+  }
+
+  .stock-lab-hero,
+  .stock-lab-main-grid,
+  .stock-lab-metrics {
+    gap:12px;
+  }
+
+  .stock-lab-hero-copy,
+  .stock-lab-card {
+    padding:18px;
+  }
+
+  .stock-lab-hero-copy {
+    min-height:0;
+  }
+
+  .stock-lab-hero-copy h2 {
+    font-size:30px;
+  }
+
+  .stock-lab-hero-copy p,
+  .stock-lab-card p {
+    font-size:13px;
+  }
+
+  .stock-lab-card:hover,
+  .stock-lab-signal-row:hover {
+    transform:none;
+  }
+
+  .stock-lab-icon {
+    width:36px;
+    height:36px;
+    margin-bottom:18px;
+  }
+
+  .stock-lab-number {
+    top:18px;
+    right:18px;
+    font-size:26px;
+  }
+
+  .stock-lab-card-title {
+    font-size:17px;
+  }
+
+  .stock-lab-posture-tone {
+    font-size:24px;
+  }
+
+  .stock-lab-metrics {
+    grid-template-columns:1fr;
+  }
+
+  .stock-lab-metric {
+    min-height:0;
+  }
+
+  .stock-lab-metric-value {
+    font-size:21px;
+  }
+
+  .stock-lab-chart-panel {
+    padding:14px;
+  }
+
+  .stock-lab-chart-panel .practice-chart-head {
+    padding-right:0;
+  }
+
+  .stock-lab-chart-panel .practice-chart-wrap,
+  html[data-theme="dark"] .stock-lab-chart-panel .practice-chart-wrap,
+  html:not([data-theme="dark"]) .stock-lab-chart-panel .practice-chart-wrap {
+    min-height:236px;
+  }
+
+  .stock-lab-section-head {
+    display:grid;
+    gap:12px;
+  }
+
+  .stock-lab-view-controls {
+    justify-content:flex-start;
+  }
+
+  .stock-lab-signal-row {
+    grid-template-columns:34px minmax(0, 1fr);
+  }
+
+  .stock-lab-signal-rank {
+    font-size:18px;
+  }
+}

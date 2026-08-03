@@ -2803,39 +2803,106 @@ function renderPracticePanel() {
   const manualButtonText = manualRunning ? (manualCycle.stage_label || '本轮执行中…') : '手动运行选股与交易策略';
   const marketContext = p.market_decision_context || {};
   const marketGuidance = Array.isArray(marketContext.guidance_lines) ? marketContext.guidance_lines.slice(0, 2) : [];
+  const marketTone = marketContext.tone_label || '中性观察';
   const marketEvaluation = marketContext.available || marketContext.tone_label
     ? `<div class="practice-market-evaluation"><span class="practice-market-evaluation-label">盘面评价 · ${esc(marketContext.tone_label || '中性')}</span><span>${esc(marketGuidance.join('；') || marketContext.source_title || '已更新')}</span><time>${esc((marketContext.source_time || marketContext.context_as_of || '').slice(5, 16))}</time></div>`
     : '';
-  return `<section class="sector-cloud" style="margin-bottom:18px">
-    <div class="practice-account-head">
-      <h3>模拟账户</h3>
-      <button type="button" class="practice-manual-cycle-btn" onclick="triggerPracticeManualCycle()" ${manualRunning ? 'disabled aria-busy="true"' : ''}>${manualRunning ? '处理中 · ' : ''}${esc(manualButtonText)}</button>
+  const labIcon = name => {
+    const paths = {
+      layers: '<path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 17 8 4 8-4"/>',
+      bars: '<path d="M4 19V5"/><path d="M8 19v-7"/><path d="M12 19V9"/><path d="M16 19v-4"/><path d="M20 19v-9"/>',
+      line: '<path d="M4 18 9 11l4 4 7-9"/><path d="M4 18h16"/>',
+      target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+      activity: '<path d="M3 12h4l3-7 4 14 3-7h4"/>',
+      wallet: '<path d="M4 7h14a2 2 0 0 1 2 2v8H6a2 2 0 0 1-2-2V7Z"/><path d="M16 11h4"/><path d="M7 7V5h10v2"/>'
+    };
+    return `<span class="stock-lab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths[name] || paths.layers}</svg></span>`;
+  };
+  const candidateItems = ((practiceCandidatesData && practiceCandidatesData.items) || []).slice(0, 3);
+  const strategyRows = candidateItems.length ? candidateItems.map((item, idx) => {
+    const score = item.best_score || item.score || '--';
+    const strategyName = BUY_NAMES[item.best_strategy] || item.best_strategy || item.strategy_name || '策略信号';
+    return `<div class="stock-lab-signal-row">
+      <span class="stock-lab-signal-rank">${String(idx + 1).padStart(2, '0')}</span>
+      <div class="stock-lab-signal-copy">
+        <b>${esc(item.name || item.code || '--')}</b>
+        <span>${esc(item.code || '')}${item.code ? ' · ' : ''}${esc(strategyName)} · 评分 ${esc(score)}/${esc(item.score_total || 10)}</span>
+      </div>
+    </div>`;
+  }).join('') : `<div class="stock-lab-signal-empty">暂无候选信号，等待下一次选股扫描。</div>`;
+  const positionSummary = showSoldStocks
+    ? `今日卖出 ${soldStocks.length} 只，重点复盘卖出后的延续或回落。`
+    : `当前持仓 ${positions.length} 只，简要模式适合盘中快速扫一眼。`;
+  const metricCards = [
+    {icon:'wallet', number:'01', title:'初始资金', value:fmtAmount(p.initial_cash), note:'模拟盘基础资金'},
+    {icon:'layers', number:'02', title:'总权益', value:fmtAmount(p.total_equity), note:'现金与持仓合计', active:true},
+    {icon:'bars', number:'03', title:'现金', value:fmtAmount(p.cash), note:'可用于下一次建仓'},
+    {icon:'line', number:'04', title:'累计收益', value:`${fmtAmount(p.total_pnl)} / ${fmtNumber(p.total_pnl_pct)}%`, note:'跟随账户曲线同步', valueClass:pnlCls}
+  ].map(card => `<article class="stock-lab-card stock-lab-metric ${card.active ? 'is-active' : ''}">
+    ${labIcon(card.icon)}
+    <span class="stock-lab-number">${card.number}</span>
+    <div class="stock-lab-card-title">${esc(card.title)}</div>
+    <div class="stock-lab-metric-value ${card.valueClass || ''}">${card.value}</div>
+    <p>${esc(card.note)}</p>
+  </article>`).join('');
+  return `<section class="sector-cloud stock-lab-shell">
+    <div class="stock-lab-hero">
+      <div class="stock-lab-hero-copy">
+        <span class="stock-lab-eyebrow">NIUONE PRACTICE</span>
+        <h2>牛牛1号策略看板</h2>
+        <p>盘中看信号、仓位和交易日志；需要更新时手动运行一次选股与交易策略。</p>
+        <div class="stock-lab-actions">
+          <button type="button" class="practice-manual-cycle-btn" onclick="triggerPracticeManualCycle()" ${manualRunning ? 'disabled aria-busy="true"' : ''}>${manualRunning ? '处理中 · ' : ''}${esc(manualButtonText)}</button>
+          <button type="button" class="practice-rule-btn" data-practice-rule-action="open">交易规则</button>
+        </div>
+      </div>
+      <article class="stock-lab-card stock-lab-posture is-active">
+        ${labIcon('activity')}
+        <span class="stock-lab-number">LIVE</span>
+        <div class="stock-lab-card-title">今日盘面</div>
+        <div class="stock-lab-posture-tone">${esc(marketTone)}</div>
+        <p>${esc(marketGuidance.join('；') || marketContext.source_title || '等待盘面评价更新')}</p>
+        ${marketEvaluation}
+        ${renderPracticeMarketSummary()}
+      </article>
     </div>
-    ${marketEvaluation}
-    ${renderPracticeMarketSummary()}
     ${manualCycle.error ? `<div class="practice-manual-cycle-error">本轮执行失败：${esc(manualCycle.error)}</div>` : ''}
     ${p.trading_paused ? `<div style=\"background:var(--yellow-soft);border:1px solid var(--yellow-border);border-radius:8px;padding:10px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center\">
       <span style=\"color:var(--yellow-text);font-size:13px\">新开仓已暂停：${esc(p.pause_reason||'风控触发')}（${esc((p.pause_since||'').slice(11,16))}起，卖出风控继续运行）</span>
       <button onclick=\"actionFetch('/api/niuniu_practice/resume').then(r=>r.json()).then(d=>{if(d.resumed)location.reload()})\" style=\"background:var(--green-soft);color:var(--green-text);border:1px solid var(--green-border);border-radius:7px;padding:6px 12px;cursor:pointer;font-size:12px;font-weight:600\">恢复交易</button>
     </div>` : ''}
-    <div class="practice-stats" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0">
-      <div class="inline-field"><div class="inline-label">初始资金</div><div class="inline-value">${fmtAmount(p.initial_cash)}</div></div>
-      <div class="inline-field"><div class="inline-label">总权益</div><div class="inline-value">${fmtAmount(p.total_equity)}</div></div>
-      <div class="inline-field"><div class="inline-label">现金</div><div class="inline-value">${fmtAmount(p.cash)}</div></div>
-      <div class="inline-field"><div class="inline-label">累计收益</div><div class="inline-value ${pnlCls}">${fmtAmount(p.total_pnl)} / ${fmtNumber(p.total_pnl_pct)}%</div></div>
+    <div class="stock-lab-metrics">${metricCards}</div>
+    <div class="stock-lab-main-grid">
+      <article class="stock-lab-card stock-lab-chart-panel">
+        <span class="stock-lab-number">CURVE</span>
+        ${renderPracticeCurve(p.equity_history || [], p.daily_equity_history || [], Number(p.initial_cash || 1000000), practiceBenchmarksData || {items:[]})}
+      </article>
+      <article class="stock-lab-card stock-lab-strategy-panel">
+        ${labIcon('target')}
+        <span class="stock-lab-number">SIGNAL</span>
+        <div class="stock-lab-card-title">策略信号</div>
+        <p>优先看候选分数、仓位和盘面状态，再决定是否手动运行策略。</p>
+        <div class="stock-lab-signal-list">${strategyRows}</div>
+      </article>
     </div>
-    <div>${renderPracticeCurve(p.equity_history || [], p.daily_equity_history || [], Number(p.initial_cash || 1000000), practiceBenchmarksData || {items:[]})}</div>
-    <div style="display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap;margin:12px 0 8px">
-      ${positionModeButtons}
-      ${!showSoldStocks ? positionDisplayButtons : ''}
-    </div>
-    <div class="${stockCardsClass}">${stockCards}</div>
-    ${operationLog}
+    <article class="stock-lab-card stock-lab-journal-panel">
+      <div class="stock-lab-section-head">
+        <div>
+          <div class="stock-lab-card-title">${showSoldStocks ? '今日卖出' : '当前持仓'}</div>
+          <p>${esc(positionSummary)}</p>
+        </div>
+        <div class="stock-lab-view-controls">
+          ${positionModeButtons}
+          ${!showSoldStocks ? positionDisplayButtons : ''}
+        </div>
+      </div>
+      <div class="${stockCardsClass}">${stockCards}</div>
+      ${operationLog}
+      <div class="practice-rule-row">
+        <span class="practice-rule-meta">${ruleMeta}</span>
+      </div>
+    </article>
     ${logDetailModal}
-    <div class="practice-rule-row">
-      <button type="button" class="practice-rule-btn" data-practice-rule-action="open">交易规则</button>
-      <span class="practice-rule-meta">${ruleMeta}</span>
-    </div>
     ${ruleModal}
     ${p.last_error ? `<div class="empty" style="color:#f87171;margin-top:10px">模型/交易错误：${esc(p.last_error)}</div>` : ''}
   </section>`;

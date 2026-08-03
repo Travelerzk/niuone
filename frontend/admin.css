@@ -123,6 +123,62 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#9
 @media(max-width:1120px){.settings-shell{grid-template-columns:1fr}.settings-sidebar{position:static;top:auto}.settings-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}.settings-nav-link{grid-template-columns:auto minmax(max-content,1fr) auto;flex:0 0 auto}.settings-actions{max-width:none}}
 @media(max-width:940px){.settings-overview{align-items:stretch;flex-direction:column}.settings-overview-stats{justify-content:flex-start}.settings-grid{grid-template-columns:1fr}.setting-row{grid-template-columns:1fr}.setting-state{grid-template-columns:repeat(2,minmax(0,1fr))}.notification-channel-grid{grid-template-columns:1fr}}
 @media(max-width:620px){h1{font-size:24px}.admin-header-actions{width:100%}.admin-header-actions .toplink{width:auto;flex:1}.settings-overview{padding:15px}.settings-overview-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.settings-stat{min-width:0}.settings-card{grid-template-columns:46px minmax(0,1fr) auto;gap:11px;min-height:116px;padding:15px}.settings-card-icon{width:46px;height:46px;font-size:12px}.settings-card-summary{font-size:12px}.settings-nav-link{min-height:34px}.settings-group-head{gap:10px}.settings-count{align-self:flex-start}.setting-state{grid-template-columns:1fr}.settings-actions{right:auto}.notification-settings{padding:12px}.notification-general-grid,.notification-channel-add-row{grid-template-columns:1fr}.notification-channel-add{width:100%}}
+
+/* Stock admin follows the approved lightweight portfolio card language. */
+.settings-overview,
+.settings-card,
+.settings-group,
+.settings-sidebar,
+.notification-block,
+.notification-channel-card,
+.admin-login-box {
+  border-top:2px solid rgba(168,85,247,.92);
+  border-radius:6px;
+  background:#11101b;
+  box-shadow:0 22px 64px rgba(0,0,0,.24);
+}
+
+.settings-card {
+  overflow:hidden;
+}
+
+.settings-card:hover,
+.settings-card:focus-visible,
+.settings-back-link:hover,
+.settings-back-link:focus-visible {
+  border-color:rgba(196,181,253,.42);
+  border-top-color:#d8b4fe;
+  background:linear-gradient(135deg, rgba(70,43,118,.94), rgba(40,25,76,.96));
+}
+
+.settings-card-icon,
+.settings-card-arrow,
+.settings-count,
+.settings-back-link {
+  border-radius:6px;
+  border-color:rgba(192,132,252,.28);
+  background:rgba(126,78,191,.22);
+  color:#d8b4fe;
+}
+
+.settings-overview-copy h2,
+.settings-card-title,
+.settings-nav-title,
+.notification-block-title,
+.config-label,
+.admin-login-box h2 {
+  color:#fff;
+}
+
+.settings-overview-copy .muted,
+.settings-card-summary,
+.settings-card-meta,
+.settings-nav-count,
+.notification-block-note,
+.config-meta,
+.admin-login-sub {
+  color:#a7a3b8;
+}
 /* Loading and login views */
 .admin-loading{margin:10vh auto;color:#93a4b8;font-size:14px}
 .admin-login-box{width:min(440px,100%);margin:7vh auto;border:1px solid var(--line);border-radius:16px;padding:28px;background:linear-gradient(135deg,rgba(16,19,26,.96),rgba(21,26,36,.90));box-shadow:0 28px 90px rgba(0,0,0,.36)}
