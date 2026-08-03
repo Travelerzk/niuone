@@ -2968,8 +2968,8 @@ function renderPracticePanel() {
         <h2>牛牛1号策略看板</h2>
         <p>盘中看信号、仓位和交易日志；需要更新时手动运行一次选股与交易策略。</p>
         <div class="stock-lab-actions">
-          <button type="button" class="practice-manual-cycle-btn" onclick="triggerPracticeManualCycle()" ${manualRunning ? 'disabled aria-busy="true"' : ''}>${manualRunning ? '处理中 · ' : ''}${esc(manualButtonText)}</button>
-          <button type="button" class="practice-rule-btn" data-practice-rule-action="open">交易规则</button>
+          <button type="button" class="practice-manual-cycle-btn" onclick="triggerPracticeManualCycle()" ${manualRunning ? 'disabled aria-busy="true"' : ''}><span>${manualRunning ? '处理中 · ' : ''}${esc(manualButtonText)}</span><svg class="stock-lab-btn-icon stock-lab-btn-icon-after" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></button>
+          <button type="button" class="practice-rule-btn" data-practice-rule-action="open"><svg class="stock-lab-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg><span>交易规则</span></button>
         </div>
       </div>
       <article class="stock-lab-card stock-lab-posture">
