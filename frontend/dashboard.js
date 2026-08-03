@@ -2692,8 +2692,8 @@ function renderPracticeMarketSummary() {
     ? '正在读取今日盘面扫描'
     : (scanCount ? `复盘资料：${sourceCountText}` : '今日暂无A股盘面扫描');
   const action = `<div class="practice-market-summary-action">
-    <button type="button" class="practice-market-summary-btn" onclick="triggerPracticeMarketSummary()" ${generating ? 'disabled aria-busy="true"' : ''}>${generating ? '处理中 · ' : ''}${esc(buttonText)}</button>
-    <span>${esc(statusText)}${d.stale ? ' · 有新增扫描，建议重新生成' : ''}</span>
+    <button type="button" class="practice-market-summary-btn niuone-glow-button niuone-glow-button-primary" onclick="triggerPracticeMarketSummary()" ${generating ? 'disabled aria-busy="true"' : ''}><span>${generating ? '处理中 · ' : ''}${esc(buttonText)}</span><svg class="stock-lab-btn-icon stock-lab-btn-icon-after" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></button>
+    <span class="practice-market-summary-hint">${esc(statusText)}${d.stale ? ' · 有新增扫描，建议重新生成' : ''}</span>
   </div>`;
   const error = d.error ? `<div class="practice-market-summary-error">${esc(d.error)}</div>` : '';
   if (!d.available || !d.summary) return `${action}${error}`;
@@ -2781,11 +2781,11 @@ function renderPracticePanel() {
   const reasonRow = (label, content) => content
     ? `<div class="position-reason-row"><span class="position-reason-label">${esc(label)}</span><span class="position-reason-text">${content}</span></div>`
     : '';
-  const positionModeButtons = `<div class="practice-mode-control" aria-label="持仓视图">
+  const positionModeButtons = `<div class="practice-mode-control niuone-segmented" aria-label="持仓视图">
     <button class="practice-mode-btn ${!showSoldStocks ? 'active' : ''}" type="button" onclick="setPracticePositionMode('open')">当前持仓${positions.length ? ` ${positions.length}` : ''}</button>
     <button class="practice-mode-btn ${showSoldStocks ? 'active' : ''}" type="button" onclick="setPracticePositionMode('sold')">今日卖出${soldStocks.length ? ` ${soldStocks.length}` : ''}</button>
   </div>`;
-  const positionDisplayButtons = `<div class="practice-mode-control" aria-label="持仓显示模式">
+  const positionDisplayButtons = `<div class="practice-mode-control niuone-segmented" aria-label="持仓显示模式">
     <button class="practice-mode-btn ${!practicePositionBriefMode ? 'active' : ''}" type="button" onclick="setPracticePositionBriefMode(false)">完整</button>
     <button class="practice-mode-btn ${practicePositionBriefMode ? 'active' : ''}" type="button" onclick="setPracticePositionBriefMode(true)">简要</button>
   </div>`;
@@ -3420,20 +3420,27 @@ function renderPracticePage() {
       else if (s >= threshold - 1.5) tierCounts.mid++;
       else tierCounts.low++;
     }
-    html += `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
-      <span style="padding:4px 9px;border-radius:6px;background:var(--green-soft);color:var(--green-text);border:1px solid var(--green-border);font-size:12px">试仓 ${tierCounts.high}只</span>
-      <span style="padding:4px 9px;border-radius:6px;background:var(--yellow-soft);color:var(--yellow-text);border:1px solid var(--yellow-border);font-size:12px">等确认 ${tierCounts.mid}只</span>
-      <span style="padding:4px 9px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);font-size:12px">仅观察 ${tierCounts.low}只</span>
-    </div>`;
+    html += `<section class="practice-candidates-section">
+      <div class="practice-candidates-head">
+        <div>
+          <h2>多战法候选列表</h2>
+          <p>统一候选标签、指标与交易状态，盘中快速扫分数、距离和硬过滤。</p>
+        </div>
+        <div class="practice-candidate-filter-row">
+          <span class="practice-candidate-chip is-green">试仓 ${tierCounts.high}只</span>
+          <span class="practice-candidate-chip is-amber">等确认 ${tierCounts.mid}只</span>
+          <span class="practice-candidate-chip">仅观察 ${tierCounts.low}只</span>
+        </div>
+      </div>`;
     const distribution = d.strategy_distribution || {};
     const distHtml = Object.entries(distribution).filter(([_, count]) => Number(count) > 0).map(([name, count]) => {
       const sm = STRATEGY_META[name] || {label:name, color:'#94a3b8'};
-      return `<span style="padding:4px 10px;border-radius:999px;background:${sm.color}18;color:${sm.color};border:1px solid ${sm.color}38;font-size:12px">${esc(sm.label)} ${Number(count)||0}</span>`;
+      return `<span class="practice-candidate-chip is-strategy" style="--chip-color:${sm.color}">${esc(sm.label)} ${Number(count)||0}</span>`;
     }).join('');
     if (distHtml) {
-      html += `<div style="display:flex;flex-wrap:wrap;gap:8px;margin:-8px 0 18px">${distHtml}</div>`;
+      html += `<div class="practice-candidate-distribution">${distHtml}</div>`;
     }
-    html += '<div style="display:grid;gap:12px">';
+    html += '<div class="practice-candidate-list">';
     for (const item of items) {
       const chg = item.change_pct != null ? (item.change_pct > 0 ? '+' : '') + item.change_pct.toFixed(2) + '%' : '--';
       const chgCls = item.change_pct > 0 ? 'up' : item.change_pct < 0 ? 'down' : 'flat';
@@ -3442,9 +3449,9 @@ function renderPracticePage() {
       const aboveBbi = item.above_bbi ? '✅' : '❌';
       const jRec = item.j_recovering ? '📈回升' : item.j_oversold ? '📉续降' : '--';
       const jInfo = item.min_j_10d != null ? `J最低 ${item.min_j_10d.toFixed(1)} ${jRec}` : '';
-      const riskFlags = (item.risk_flags || []).map(f => `<span style="color:#f87171;font-size:11px;margin-left:6px">⚠️${esc(f)}</span>`).join('');
+      const riskFlags = (item.risk_flags || []).map(f => `<span class="practice-candidate-flag is-risk">⚠ ${esc(f)}</span>`).join('');
       const hardBlockers = item.hard_blockers || [];
-      const hardBlockerFlags = hardBlockers.map(f => `<span style="color:#fbbf24;font-size:11px;margin-left:6px">硬过滤:${esc(f)}</span>`).join('');
+      const hardBlockerFlags = hardBlockers.map(f => `<span class="practice-candidate-flag is-hard">硬过滤: ${esc(f)}</span>`).join('');
       const stratName = item.best_strategy || '';
       const isSectorTide = ['tide_leader', 'tide_rotation', 'tide_recovery'].includes(stratName);
       const tideStatusNames = {leading:'领先', improving:'改善', weakening:'转弱', lagging:'落后'};
@@ -3456,41 +3463,40 @@ function renderPracticePage() {
       const tradeDiscipline = [item.position_hint, item.time_stop].filter(Boolean).join(' · ');
       const tradeReady = !!item.actionable && !hardBlockers.length && finalScore >= entryThreshold;
       const industryLabel = item.industry || item.sector || item.board_label || STOCK_BOARD_LABELS[item.board] || '';
-      const groupBadgeBase = 'display:inline-flex;align-items:center;flex:0 0 auto;white-space:nowrap;line-height:1;background:var(--green-soft);color:var(--green-text);border:1px solid var(--green-border);padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600';
-      if (tradeReady) groupBadge = `<span style="${groupBadgeBase}">交易达标</span>`;
-      else if (hardBlockers.length) groupBadge = `<span style="${groupBadgeBase};background:var(--yellow-soft);color:var(--yellow-text);border-color:var(--yellow-border)">硬过滤</span>`;
-      else if (finalScore >= entryThreshold - 1.5) groupBadge = `<span style="${groupBadgeBase};background:var(--yellow-soft);color:var(--yellow-text);border-color:var(--yellow-border)">等确认</span>`;
-      else groupBadge = `<span style="${groupBadgeBase};background:var(--panel2);color:var(--muted);border-color:var(--line)">仅观察</span>`;
-      html += `<div style="background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px">
-          <div style="min-width:0;flex:1 1 auto">
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0">
-              <span style="font-weight:780;font-size:17px;color:var(--text)">${esc(item.code)} ${esc(item.name)}</span>
-              <span style="display:inline-flex;align-items:center;white-space:nowrap;padding:2px 8px;border-radius:999px;background:${sm.color}22;color:${sm.color};font-size:12px;border:1px solid ${sm.color}44">${esc(sm.label)}</span>
+      if (tradeReady) groupBadge = '<span class="practice-candidate-status is-ready">交易达标</span>';
+      else if (hardBlockers.length) groupBadge = '<span class="practice-candidate-status is-hard">硬过滤</span>';
+      else if (finalScore >= entryThreshold - 1.5) groupBadge = '<span class="practice-candidate-status is-wait">等确认</span>';
+      else groupBadge = '<span class="practice-candidate-status">仅观察</span>';
+      html += `<article class="practice-candidate-card">
+        <div class="practice-candidate-top">
+          <div class="practice-candidate-title-block">
+            <div class="practice-candidate-title-row">
+              <span class="practice-candidate-name">${esc(item.code)} ${esc(item.name)}</span>
+              <span class="practice-candidate-chip is-strategy" style="--chip-color:${sm.color}">${esc(sm.label)}</span>
             </div>
-            ${industryLabel ? `<div style="margin-top:8px"><span style="display:inline-flex;align-items:center;max-width:100%;white-space:nowrap;padding:2px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent-text);font-size:12px">${esc(industryLabel)}</span></div>` : ''}
+            ${industryLabel ? `<div class="practice-candidate-board">${esc(industryLabel)}</div>` : ''}
           </div>
           ${groupBadge}
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
-          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:8px 10px;flex:1;min-width:100px">
-            <div style="color:var(--muted);font-size:11px">价格 / 涨跌</div>
-            <div style="color:var(--text);font-size:14px;font-weight:600">${fmtNumber(item.price)} <span class="index-change ${chgCls}" style="font-size:13px">${esc(chg)}</span></div>
+        <div class="practice-candidate-metrics">
+          <div class="practice-candidate-metric">
+            <div class="practice-candidate-metric-label">价格 / 涨跌</div>
+            <div class="practice-candidate-metric-value">${fmtNumber(item.price)} <span class="index-change ${chgCls}">${esc(chg)}</span></div>
           </div>
-          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:8px 10px;flex:1;min-width:100px">
-            <div style="color:var(--muted);font-size:11px">${esc(sm.label)}评分</div>
-            <div style="color:var(--text);font-size:14px;font-weight:600">${item.best_score||item.score}/${item.score_total||10} · 基准≥${entryThreshold}</div>
+          <div class="practice-candidate-metric">
+            <div class="practice-candidate-metric-label">${esc(sm.label)}评分</div>
+            <div class="practice-candidate-metric-value">${item.best_score||item.score}/${item.score_total||10} · 基准≥${entryThreshold}</div>
           </div>
-          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:8px 10px;flex:1;min-width:100px">
-            <div style="color:var(--muted);font-size:11px">${isSectorTide ? 'EMA20 / 距EMA20' : 'BBI / 距BBI'}</div>
-            <div style="color:var(--text);font-size:14px;font-weight:600">${fmtNumber(isSectorTide ? item.ema20 : item.bbi)} / ${esc(distStr)}</div>
+          <div class="practice-candidate-metric">
+            <div class="practice-candidate-metric-label">${isSectorTide ? 'EMA20 / 距EMA20' : 'BBI / 距BBI'}</div>
+            <div class="practice-candidate-metric-value">${fmtNumber(isSectorTide ? item.ema20 : item.bbi)} / ${esc(distStr)}</div>
           </div>
-          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:8px 10px;flex:1;min-width:100px">
-            <div style="color:var(--muted);font-size:11px">成交额</div>
-            <div style="color:var(--text);font-size:14px;font-weight:600">${item.amount_yi != null ? item.amount_yi + '亿' : '--'}</div>
+          <div class="practice-candidate-metric">
+            <div class="practice-candidate-metric-label">成交额</div>
+            <div class="practice-candidate-metric-value">${item.amount_yi != null ? item.amount_yi + '亿' : '--'}</div>
           </div>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;color:var(--muted);font-size:12px">
+        <div class="practice-candidate-rules">
           ${isSectorTide
             ? `<span>市场 ${esc(item.market_regime || '--')} ${fmtNumber(item.market_score)}</span><span>行业潮位 ${esc(tideStatusNames[item.sector_status] || item.sector_status || '--')} / ${fmtNumber(item.sector_score)}</span><span>板块内排名 ${fmtNumber(item.stock_sector_rank)}</span><span>结构止损 ${fmtNumber(item.stop_price)} (${fmtNumber(item.stop_distance_pct)}%)</span><span>跳空缓冲 ${fmtNumber(item.gap_buffer_pct)}%</span><span>有效损失 ${fmtNumber(item.effective_loss_distance_pct)}%</span><span>单笔预算 ${fmtNumber(item.per_trade_risk_budget_pct)}%</span><span>动态仓位上限 ${fmtNumber(item.max_position_pct_by_risk)}%</span>`
             : `<span>BBI上行 ${bbiUp}</span><span>站上BBI ${aboveBbi}</span><span>${esc(jInfo)}</span>`}
@@ -3499,9 +3505,9 @@ function renderPracticePage() {
           ${hardBlockerFlags}
           ${riskFlags}
         </div>
-      </div>`;
+      </article>`;
     }
-    html += '</div>';
+    html += '</div></section>';
   }
   $('feed').innerHTML = html;
   schedulePortfolioMotionBinding();
@@ -4771,8 +4777,8 @@ function dragonTigerErrorText(error) {
 function renderDragonTigerDateControls(payload = {}) {
   return `<div class="dragon-tiger-date-controls">
     <input id="dragonTigerDatePicker" type="date" value="${esc(dragonTigerSelectedDate || payload.date || '')}" aria-label="龙虎榜交易日">
-    <button type="button" data-dragon-tiger-date-action="load">查看</button>
-    <button type="button" data-dragon-tiger-date-action="latest">最新</button>
+    <button type="button" class="niuone-glow-button niuone-glow-button-secondary" data-dragon-tiger-date-action="load">查看</button>
+    <button type="button" class="niuone-glow-button niuone-glow-button-secondary" data-dragon-tiger-date-action="latest">最新</button>
   </div>`;
 }
 function renderDragonTigerPanel() {
