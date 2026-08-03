@@ -1321,6 +1321,69 @@ function renderTabs() {
       console.error(err);
     });
   });
+  schedulePortfolioMotionBinding();
+}
+
+function bindPortfolioMotionCards() {
+  const motionSelectors = [
+    '.stock-lab-card',
+    '.stock-lab-hero-copy',
+    '.index-card',
+    '.sector-cloud:not(.stock-lab-shell)',
+    '.hot-item',
+    '.sector-item',
+    '.market-monitor-card',
+    '.us-market-summary-card',
+    '.market-metric-item',
+    '.dragon-tiger-item',
+    '.dragon-tiger-panel',
+    '.position-card',
+    '.position-brief-card',
+    '.practice-log-panel',
+    '.practice-chart-card'
+  ];
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll(motionSelectors.join(',')).forEach(card => {
+    if (card.dataset.motionCardBound === '1') return;
+    card.dataset.motionCardBound = '1';
+    card.classList.add('portfolio-motion-card');
+    card.style.setProperty('--mx', '50%');
+    card.style.setProperty('--my', '50%');
+    card.style.setProperty('--rx', '0deg');
+    card.style.setProperty('--ry', '0deg');
+    card.style.setProperty('--dx', '0');
+    card.style.setProperty('--dy', '0');
+    if (reduceMotion) return;
+    card.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch') return;
+      const rect = card.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const dx = (x - rect.width / 2) / rect.width;
+      const dy = (y - rect.height / 2) / rect.height;
+      card.style.setProperty('--mx', `${Math.max(0, Math.min(100, x / rect.width * 100)).toFixed(2)}%`);
+      card.style.setProperty('--my', `${Math.max(0, Math.min(100, y / rect.height * 100)).toFixed(2)}%`);
+      card.style.setProperty('--rx', `${(-dy * 6).toFixed(2)}deg`);
+      card.style.setProperty('--ry', `${(dx * 6).toFixed(2)}deg`);
+      card.style.setProperty('--dx', dx.toFixed(3));
+      card.style.setProperty('--dy', dy.toFixed(3));
+    }, {passive:true});
+    const resetMotion = () => {
+      card.style.setProperty('--mx', '50%');
+      card.style.setProperty('--my', '50%');
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--dx', '0');
+      card.style.setProperty('--dy', '0');
+    };
+    card.addEventListener('pointerleave', resetMotion, {passive:true});
+    card.addEventListener('blur', resetMotion, true);
+  });
+}
+
+function schedulePortfolioMotionBinding() {
+  requestAnimationFrame(bindPortfolioMotionCards);
 }
 function applyViewStateFromLocation() {
   const params = new URLSearchParams(location.search);
@@ -2835,7 +2898,7 @@ function renderPracticePanel() {
     : `当前持仓 ${positions.length} 只，简要模式适合盘中快速扫一眼。`;
   const metricCards = [
     {icon:'wallet', number:'01', title:'初始资金', value:fmtAmount(p.initial_cash), note:'模拟盘基础资金'},
-    {icon:'layers', number:'02', title:'总权益', value:fmtAmount(p.total_equity), note:'现金与持仓合计', active:true},
+    {icon:'layers', number:'02', title:'总权益', value:fmtAmount(p.total_equity), note:'现金与持仓合计'},
     {icon:'bars', number:'03', title:'现金', value:fmtAmount(p.cash), note:'可用于下一次建仓'},
     {icon:'line', number:'04', title:'累计收益', value:`${fmtAmount(p.total_pnl)} / ${fmtNumber(p.total_pnl_pct)}%`, note:'跟随账户曲线同步', valueClass:pnlCls}
   ].map(card => `<article class="stock-lab-card stock-lab-metric ${card.active ? 'is-active' : ''}">
@@ -2856,7 +2919,7 @@ function renderPracticePanel() {
           <button type="button" class="practice-rule-btn" data-practice-rule-action="open">交易规则</button>
         </div>
       </div>
-      <article class="stock-lab-card stock-lab-posture is-active">
+      <article class="stock-lab-card stock-lab-posture">
         ${labIcon('activity')}
         <span class="stock-lab-number">LIVE</span>
         <div class="stock-lab-card-title">今日盘面</div>
@@ -3388,6 +3451,7 @@ function renderPracticePage() {
     html += '</div>';
   }
   $('feed').innerHTML = html;
+  schedulePortfolioMotionBinding();
 }
 function ratingDateKey(r) {
   const t = String(r.time || '').trim();
@@ -5199,6 +5263,7 @@ function render() {
   if (activeCategory !== 'industry_flow') stopIndustryFlowAnimation();
   if (activeCategory === 'indices') {
     $('feed').innerHTML = renderIndicesPanel();
+    schedulePortfolioMotionBinding();
     return;
   }
   if (activeCategory === 'practice') {
@@ -5213,25 +5278,30 @@ function render() {
   }
   if (activeCategory === 'dragon_tiger') {
     $('feed').innerHTML = renderDragonTigerPanel();
+    schedulePortfolioMotionBinding();
     return;
   }
   const records = filtered();
   if (activeCategory === 'us_ratings') {
     $('feed').innerHTML = renderUsRatingDay(records) + renderHistoryControls(records);
     restoreRatingDetail();
+    schedulePortfolioMotionBinding();
     return;
   }
   if (activeCategory === 'x_monitor') {
     $('feed').innerHTML = renderXMonitor(records);
+    schedulePortfolioMotionBinding();
     return;
   }
   if (activeCategory === 'market_monitor') {
     $('feed').innerHTML = renderMarketMonitor(records);
+    schedulePortfolioMotionBinding();
     return;
   }
   $('feed').innerHTML = records.length
     ? records.map(r => renderCard(r)).join('') + renderHistoryControls(records)
     : '<div class="empty">暂无匹配消息</div>';
+  schedulePortfolioMotionBinding();
 }
 function parseThread(content) {
   const lines = content.split('\n');
