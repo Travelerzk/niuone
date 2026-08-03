@@ -4260,6 +4260,10 @@ html:not([data-theme="dark"]) .niuone-segmented .practice-mode-btn.active {
   box-shadow:0 22px 64px rgba(0,0,0,.20);
 }
 
+.practice-candidate-card.border-glow-card {
+  padding:16px;
+}
+
 .practice-candidate-top {
   display:flex;
   justify-content:space-between;
@@ -4388,6 +4392,11 @@ html:not([data-theme="dark"]) .dragon-tiger-date-controls input {
 .stock-lab-journal-panel .practice-log-row,
 .stock-lab-journal-panel .empty,
 .stock-lab-signal-row,
+.practice-candidate-metric,
+.practice-candidate-chip,
+.practice-candidate-status,
+.practice-candidate-board,
+.practice-candidate-flag,
 .practice-mode-control,
 .practice-mode-btn {
   transform:none !important;
@@ -4401,7 +4410,13 @@ html:not([data-theme="dark"]) .dragon-tiger-date-controls input {
 .stock-lab-journal-panel .practice-log-panel::before,
 .stock-lab-journal-panel .practice-log-panel::after,
 .stock-lab-signal-row::before,
-.stock-lab-signal-row::after {
+.stock-lab-signal-row::after,
+.practice-candidate-metric::before,
+.practice-candidate-metric::after,
+.practice-candidate-chip::before,
+.practice-candidate-chip::after,
+.practice-candidate-status::before,
+.practice-candidate-status::after {
   display:none !important;
 }
 

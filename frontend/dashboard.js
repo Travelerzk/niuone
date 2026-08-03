@@ -1332,6 +1332,7 @@ function bindPortfolioMotionCards() {
     '.stock-lab-chart-panel',
     '.stock-lab-strategy-panel',
     '.stock-lab-journal-panel',
+    '.practice-candidate-card',
     '.index-card',
     '.market-monitor-card',
     '.us-market-summary-card',
